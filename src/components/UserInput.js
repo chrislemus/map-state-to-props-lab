@@ -1,26 +1,25 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 
 class UserInput extends Component {
-
   state = {
     username: '',
-    hometown: ''
-  }
+    hometown: '',
+  };
 
   handleInputChange = (event) => {
     this.setState({
-      [event.target.id]: event.target.value
+      [event.target.id]: event.target.value,
     });
-  }
+  };
 
   handleOnSubmit = (event) => {
     event.preventDefault();
-    this.props.dispatch({type: 'ADD_USER', user: this.state})
-  }
+    this.props.addUser(this.state);
+  };
 
   render() {
-    return(
+    return (
       <form onSubmit={this.handleOnSubmit}>
         <p>
           <input
@@ -40,8 +39,14 @@ class UserInput extends Component {
         </p>
         <input type="submit" />
       </form>
-    )
+    );
   }
 }
 
-export default connect()(UserInput);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addUser: (user) => dispatch({ type: 'ADD_USER', user }),
+  };
+};
+
+export default connect((state) => state, mapDispatchToProps)(UserInput);
